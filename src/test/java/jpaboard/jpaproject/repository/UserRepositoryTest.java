@@ -1,6 +1,7 @@
 package jpaboard.jpaproject.repository;
 
 import jpaboard.jpaproject.domain.User;
+import jpaboard.jpaproject.domain.UserRole;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -31,6 +32,7 @@ public class UserRepositoryTest {
                         .pwd("javascript")
                         .email("aaa@aaa.com")
                         .name("RexSeo")
+                        .userRole(UserRole.USER)
                         .build());
 
         // when
@@ -51,6 +53,7 @@ public class UserRepositoryTest {
                     .pwd("javascript")
                     .email("aaa@aaa.com")
                     .name("RexSeo")
+                    .userRole(UserRole.USER)
                     .build());
 
         // when

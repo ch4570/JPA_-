@@ -1,6 +1,7 @@
 package jpaboard.jpaproject.service;
 
 import jpaboard.jpaproject.domain.User;
+import jpaboard.jpaproject.domain.UserRole;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -29,10 +30,11 @@ public class UserServiceTest {
                 .pwd("javascript")
                 .email("aaa@aaa.com")
                 .name("RexSeo")
+                .userRole(UserRole.USER)
                 .build());
 
         // when
-        User findUser = userService.findOneUser(insertUser.getNo()).get();
+        User findUser = userService.findOneUser(insertUser.getNo());
 
         // then
         assertEquals(insertUser, findUser);
@@ -50,6 +52,7 @@ public class UserServiceTest {
                 .pwd("javascript")
                 .email("aaa@aaa.com")
                 .name("RexSeo")
+                .userRole(UserRole.USER)
                 .build();
 
         // when
@@ -74,13 +77,22 @@ public class UserServiceTest {
                 .pwd("javascript")
                 .email("aaa@aaa.com")
                 .name("RexSeo")
+                .userRole(UserRole.USER)
                 .build();
 
         insertUser = userService.join(insertUser);
 
+        User modifyUser = User.builder()
+                .no(insertUser.getNo())
+                .id("Kafka")
+                .pwd("javascript")
+                .email("aaa@aaa.com")
+                .name("DevSeo")
+                .userRole(UserRole.USER)
+                .build();
+
         // when
-        User modifiedUser = userService.modifyUser(insertUser, "bbb@bbb.com",
-               "DevSeo", "React", "Java");
+        User modifiedUser = userService.modifyUser(modifyUser);
 
         User findModifiedUser = userService.findOneUserByName("DevSeo");
 
