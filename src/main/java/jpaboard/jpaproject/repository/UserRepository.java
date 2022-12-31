@@ -1,32 +1,31 @@
 package jpaboard.jpaproject.repository;
 
 import jpaboard.jpaproject.domain.User;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
-import javax.persistence.EntityManager;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-@RequiredArgsConstructor
-public class UserRepository {
+import java.util.Optional;
 
-    private final EntityManager em;
+public interface UserRepository extends JpaRepository<User, Long> {
 
     /*
     *   회원 가입
     *   @param User
     *   @return userNo
     * */
-    public Long insertUser(User user) {
-        em.persist(user);
-        return user.getNo();
-    }
+    public User save(User user);
 
     /*
     *   회원 한명 조회
     *   @param userNo
     *   @return User
     * */
-    public User findOneUser(Long userNo) {
-        return em.find(User.class, userNo);
-    }
+    public Optional<User> findById(Long id);
+
+    /*
+    *   회원 이름으로 조회
+    *   @param userName
+    *   @return User
+    * */
+    public User findByName(String name);
+
 }
