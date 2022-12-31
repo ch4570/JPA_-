@@ -3,12 +3,12 @@ package jpaboard.jpaproject.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor @Builder
 public class Board extends BaseEntity {
 
     @Id @GeneratedValue
@@ -24,11 +24,17 @@ public class Board extends BaseEntity {
     @Column(name = "ARTICLE_COUNT")
     private int count;
 
-    @Column(name = "ARTICLE_AUTHOR")
+    @Column(name = "ARTICLE_AUTHOR", length = 30)
     private String author;
 
     @ManyToOne
     @JoinColumn(name = "USER_NO")
     private User user;
 
+
+    // == 연관관계 편의 메서드 == //
+    public void addUser(User user) {
+        this.user = user;
+        user.getBoardList().add(this);
+    }
 }
