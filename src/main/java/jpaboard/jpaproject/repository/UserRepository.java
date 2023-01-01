@@ -28,4 +28,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     * */
     public User findByName(String name);
 
+    /*
+    *   회원 한명 삭제
+    *   @param userNo
+    * */
+    public void delete(User user);
 }

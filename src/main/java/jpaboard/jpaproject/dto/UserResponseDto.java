@@ -1,12 +1,10 @@
 package jpaboard.jpaproject.dto;
 
 import jpaboard.jpaproject.domain.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.ToString;
+import lombok.*;
 
 @Builder
-@AllArgsConstructor @ToString
+@AllArgsConstructor
 public class UserResponseDto {
 
 
@@ -21,4 +19,8 @@ public class UserResponseDto {
     private String email;
 
     private UserRole userRole;
+
+    public UserResponseDto() {
+
+    }
 }

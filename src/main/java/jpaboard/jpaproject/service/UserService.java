@@ -70,6 +70,15 @@ public class UserService {
     }
 
     /*
+    *   회원 한명 삭제
+    *   @param userNo
+    * */
+    @Transactional
+    public void removeUser(User user) {
+        userRepository.delete(user);
+    }
+
+    /*
     *   중복 회원 조회 메서드
     *   @param User
     *   @return boolean

@@ -1,8 +1,8 @@
 package jpaboard.jpaproject.dto;
 
 import jpaboard.jpaproject.domain.User;
-import lombok.Getter;
-import lombok.Setter;
+import jpaboard.jpaproject.domain.UserRole;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
@@ -10,6 +10,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 @Getter @Setter
+@AllArgsConstructor @Builder
+@NoArgsConstructor
 public class UserRequestDto {
 
     private Long no;
@@ -29,6 +31,7 @@ public class UserRequestDto {
     @NotEmpty(message = "이메일은 필수 입력 항목입니다.")
     @Email(message = "이메일 형식에 맞게 입력해주세요.")
     private String email;
+
 
 
     public User userRequestToEntity() {
