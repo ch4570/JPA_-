@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     /*
-    *   회원 가입
+    *   회원 가입 & 회원 수정
     *   @param User
     *   @return userNo
     * */

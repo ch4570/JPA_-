@@ -6,9 +6,6 @@ import jpaboard.jpaproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 
@@ -38,11 +35,8 @@ public class UserService {
     * */
     public User findOneUser(Long userNo) {
         Optional<User> findUser = userRepository.findById(userNo);
-        if (findUser.isEmpty()) {
-            throw new IllegalStateException("조회하려는 회원은 존재하지 않습니다.");
-        } else {
-            return findUser.get();
-        }
+        findUser.orElseThrow(() -> new IllegalStateException("조회하려는 회원은 존재하지 않습니다."));
+        return findUser.get();
     }
 
     /*
@@ -61,11 +55,7 @@ public class UserService {
     * */
     @Transactional
     public User modifyUser(User user) {
-        User modifyUser = userRepository.findById(user.getNo()).get();
-        modifyUser.setEmail(user.getEmail());
-        modifyUser.setName(user.getName());
-        modifyUser.setPwd(user.getPwd());
-        modifyUser.setModId(user.getModId());
+        User modifyUser = userRepository.save(user);
         return modifyUser;
     }
 
@@ -74,7 +64,9 @@ public class UserService {
     *   @param userNo
     * */
     @Transactional
-    public void removeUser(User user) {
+    public void removeUser(Long userNo) {
+        User user = userRepository.findById(userNo)
+                        .orElseThrow(() ->  new IllegalStateException("해당 회원번호와 일치하는 회원이 없어 삭제가 불가능합니다."));
         userRepository.delete(user);
     }
 

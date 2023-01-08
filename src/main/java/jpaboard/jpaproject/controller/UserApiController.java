@@ -17,13 +17,13 @@ public class UserApiController {
     private final UserService userService;
 
 
-    @DeleteMapping("user/delete/{userNo}")
-    public ResponseEntity<HttpStatus> removeUser(@PathVariable("userNo") Long userNo) throws Exception{
-        User user = userService.findOneUser(userNo);
+    @DeleteMapping("/user/delete/{userNo}")
+    public void removeUser(@PathVariable("userNo") Long userNo) {
 
-        userService.removeUser(user);
-        return ResponseEntity.ok().build();
+        userService.removeUser(userNo);
     }
+
+
 
 }
 
