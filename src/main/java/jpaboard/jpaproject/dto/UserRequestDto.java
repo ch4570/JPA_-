@@ -1,7 +1,6 @@
 package jpaboard.jpaproject.dto;
 
 import jpaboard.jpaproject.domain.User;
-import jpaboard.jpaproject.domain.UserRole;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 

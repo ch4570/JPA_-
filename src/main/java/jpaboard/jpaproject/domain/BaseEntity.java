@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @MappedSuperclass
-@Getter @Setter
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
 

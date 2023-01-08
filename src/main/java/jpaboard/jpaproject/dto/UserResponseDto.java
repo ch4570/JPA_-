@@ -5,6 +5,7 @@ import lombok.*;
 
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserResponseDto {
 
 
@@ -20,7 +21,4 @@ public class UserResponseDto {
 
     private UserRole userRole;
 
-    public UserResponseDto() {
-
-    }
 }
