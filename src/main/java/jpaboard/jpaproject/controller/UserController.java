@@ -38,7 +38,6 @@ public class UserController {
                         .build();
 
         model.addAttribute("user", responseUser);
-        System.out.println(responseUser);
         return "user/userInfo";
     }
 
@@ -60,7 +59,7 @@ public class UserController {
      *   @return ResponseEntity
      * */
     @PostMapping("/user/join")
-    public String joinUser(@RequestBody @Valid UserRequestDto userRequestDto, BindingResult bindingResult) {
+    public String joinUser(@Valid UserRequestDto userRequestDto, BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()) {
             return "";
@@ -100,7 +99,7 @@ public class UserController {
      *   @return ResponseEntity
      * */
     @PutMapping("/user/modify")
-    public String modifyUser(@RequestBody @Valid UserRequestDto userRequestDto, BindingResult bindingResult) {
+    public String modifyUser(@Valid UserRequestDto userRequestDto, BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()) {
             return "";
@@ -110,6 +109,11 @@ public class UserController {
         User modifiedUser = userService.modifyUser(modifyUser);
 
         return "";
+    }
+
+    @GetMapping("user/delete")
+    public String deleteUser() {
+        return "delete";
     }
 
 }
