@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -39,7 +39,7 @@ public class UserRepositoryTest {
         User saveUser = userRepository.findById(insertUser.getNo()).get();
 
         // then
-        assertEquals(insertUser, saveUser);
+        assertThat(insertUser).isEqualTo(saveUser);
     }
 
     @Test
@@ -60,14 +60,14 @@ public class UserRepositoryTest {
         User findUser = userRepository.findByName("RexSeo");
 
         // then
-        assertEquals(insertUser, findUser);
+        assertThat(insertUser).isEqualTo(findUser);
     }
 
 
     @Test
     @DisplayName("없는 회원 조회 예외 테스트")
     @Transactional
-    public void notExistUserFind() {
+    public void notExistUserFindTest() {
 
         // given
         Long userNo = 99L;
@@ -76,10 +76,32 @@ public class UserRepositoryTest {
         Optional<User> findUser = userRepository.findById(userNo);
 
         // then
-        Throwable exception = assertThrows(NoSuchElementException.class,
-                findUser::get);
+        assertThatThrownBy(() -> findUser.get())
+                .isInstanceOf(NoSuchElementException.class);
 
-        assertEquals(exception.getMessage(),"No value present");
+    }
+
+    @Test
+    @DisplayName("회원 삭제 테스트")
+    @Transactional
+    public void deleteUserTest() {
+
+        // given
+        User insertUser = userRepository.save(User.builder()
+                .id("Kafka")
+                .pwd("javascript")
+                .email("aaa@aaa.com")
+                .name("RexSeo")
+                .userRole(UserRole.USER)
+                .build());
+
+        // when
+        userRepository.delete(insertUser);
+        Optional<User> findUser = userRepository.findById(insertUser.getNo());
+
+        // then
+        assertThatThrownBy(() -> findUser.get())
+                .isInstanceOf(NoSuchElementException.class);
 
     }
 

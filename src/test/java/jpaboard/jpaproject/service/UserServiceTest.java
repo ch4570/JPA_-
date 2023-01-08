@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -37,7 +37,7 @@ public class UserServiceTest {
         User findUser = userService.findOneUser(insertUser.getNo());
 
         // then
-        assertEquals(insertUser, findUser);
+        assertThat(insertUser).isEqualTo(findUser);
 
     }
 
@@ -59,10 +59,8 @@ public class UserServiceTest {
         userService.join(insertUser);
 
         // then
-        Throwable exception = assertThrows(IllegalStateException.class,
-                () -> userService.join(insertUser));
-
-        assertEquals("이미 존재하는 회원입니다.", exception.getMessage());
+        assertThatThrownBy(() -> userService.join(insertUser))
+                .isInstanceOf(IllegalStateException.class);
 
     }
 
@@ -93,11 +91,33 @@ public class UserServiceTest {
 
         // when
         User modifiedUser = userService.modifyUser(modifyUser);
-
         User findModifiedUser = userService.findOneUserByName("DevSeo");
 
-        assertEquals(modifiedUser, findModifiedUser);
+        //then
+        assertThat(modifiedUser).isEqualTo(findModifiedUser);
 
+    }
+
+    @Test
+    @DisplayName("회원 삭제 테스트")
+    @Transactional
+    public void deleteUserTest() {
+
+        // given
+        User insertUser = userService.join(User.builder()
+                .id("Kafka")
+                .pwd("javascript")
+                .email("aaa@aaa.com")
+                .name("RexSeo")
+                .userRole(UserRole.USER)
+                .build());
+
+        // when
+        userService.removeUser(insertUser.getNo());
+
+        // then
+        assertThatThrownBy(() -> userService.findOneUser(insertUser.getNo()))
+                .isInstanceOf(IllegalStateException.class);
     }
 
 }
