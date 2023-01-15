@@ -7,9 +7,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -103,6 +105,44 @@ public class UserRepositoryTest {
         assertThatThrownBy(() -> findUser.get())
                 .isInstanceOf(NoSuchElementException.class);
 
+    }
+
+    @Test
+    @DisplayName("회원 리스트 조회 테스트")
+    @Transactional
+    public void selectAllUsers() {
+        // given
+        User insertUser1 = userRepository.save(User.builder()
+                .id("Ruby on Rails")
+                .pwd("javascript")
+                .email("aaa@aaa.com")
+                .name("A")
+                .userRole(UserRole.USER)
+                .build());
+
+        User insertUser2 = userRepository.save(User.builder()
+                .id("RabbitMQ")
+                .pwd("javascript")
+                .email("aaa@aaa.com")
+                .name("B")
+                .userRole(UserRole.USER)
+                .build());
+
+        User insertUser3 = userRepository.save(User.builder()
+                .id("Docker")
+                .pwd("javascript")
+                .email("aaa@aaa.com")
+                .name("C")
+                .userRole(UserRole.USER)
+                .build());
+
+        // when
+        List<User> userList = userRepository.findAll(Sort.by(Sort.Direction.ASC, "no"));
+
+        // then
+        assertThat(insertUser1).isEqualTo(userList.get(0));
+        assertThat(insertUser2).isEqualTo(userList.get(1));
+        assertThat(insertUser3).isEqualTo(userList.get(2));
     }
 
 }

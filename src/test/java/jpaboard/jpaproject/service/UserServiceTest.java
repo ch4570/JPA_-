@@ -2,6 +2,7 @@ package jpaboard.jpaproject.service;
 
 import jpaboard.jpaproject.domain.User;
 import jpaboard.jpaproject.domain.UserRole;
+import org.assertj.core.api.AbstractThrowableAssert;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -120,4 +123,56 @@ public class UserServiceTest {
                 .isInstanceOf(IllegalStateException.class);
     }
 
+    @Test
+    @DisplayName("회원 리스트 조회 테스트")
+    @Transactional
+    public void selectAllUsers() {
+        // given
+        User insertUser1 = userService.join(User.builder()
+                .id("Ruby on Rails")
+                .pwd("javascript")
+                .email("aaa@aaa.com")
+                .name("A")
+                .userRole(UserRole.USER)
+                .build());
+
+        User insertUser2 = userService.join(User.builder()
+                .id("RabbitMQ")
+                .pwd("javascript")
+                .email("aaa@aaa.com")
+                .name("B")
+                .userRole(UserRole.USER)
+                .build());
+
+        User insertUser3 = userService.join(User.builder()
+                .id("Docker")
+                .pwd("javascript")
+                .email("aaa@aaa.com")
+                .name("C")
+                .userRole(UserRole.USER)
+                .build());
+
+        // when
+        List<User> userList = userService.findAllUsers();
+
+        // then
+        assertThat(insertUser1).isEqualTo(userList.get(0));
+        assertThat(insertUser2).isEqualTo(userList.get(1));
+        assertThat(insertUser3).isEqualTo(userList.get(2));
+    }
+
+    @Test
+    @DisplayName("회원 리스트 비어 있을때 예외 테스트")
+    @Transactional
+    public void selectAllUsersIsEmpty() {
+        // given
+
+
+        // when
+
+
+        // then
+       assertThatThrownBy(() -> userService.findAllUsers())
+               .isInstanceOf(IllegalStateException.class);
+    }
 }
