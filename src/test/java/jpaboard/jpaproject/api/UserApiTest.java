@@ -27,6 +27,7 @@ public class UserApiTest {
     public void validateUserIsRequired() {
         // given
         UserRequestDto user = UserRequestDto.builder()
+                .name("RexSeo")
                 .build();
 
         // when
@@ -55,7 +56,7 @@ public class UserApiTest {
                 .id("Java")
                 .name("Dev")
                 .pwd("cadksfj")
-                .email("cccaaaaa")
+                .email("aaa@aaa.com")
                 .build();
 
         // when
@@ -71,7 +72,7 @@ public class UserApiTest {
             System.out.println("message = " + message);
         }
 
-        assertThat(messageList).contains("이메일 형식에 맞게 입력해주세요.", "비밀번호는 영문과 특수문자를 포함하며 8자 이상이어야 합니다.");
+        assertThat(messageList).contains("이메일 형식에 맞게 입력해주세요.", "비밀번호는 영문과 특수문자를 포함하며 8자 이상, 20자 이하여야 합니다.");
     }
 
     @Test
@@ -79,7 +80,7 @@ public class UserApiTest {
     public void validateUserLengthTest() {
         // given
         UserRequestDto user = UserRequestDto.builder()
-                .id("aaaaaaaaaaaaaaaajhdfkadshfjkdashflkashdfjkahsfjkdashfjkdashfjkdshaflajskdhfjkalsd")
+                .id("aaaaaaaaaaa")
                 .name("Devaklsdfjlkdsajflsdfgsdfgfkdjsglfsdkjgklsgsgdf")
                 .pwd("fdkjlk1232!")
                 .email("ccc@ccc.com")
