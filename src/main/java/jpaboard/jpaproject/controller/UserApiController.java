@@ -17,7 +17,7 @@ public class UserApiController {
     private final UserService userService;
 
 
-    @DeleteMapping("/user/delete/{userNo}")
+    @DeleteMapping("/users/{userNo}")
     public void removeUser(@PathVariable("userNo") Long userNo) {
 
         userService.removeUser(userNo);
