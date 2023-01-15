@@ -12,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class UserController {
      *   @param userNo
      *   @return String(View-Name)
      * */
-    @GetMapping("/user/find/{userNo}")
+    @GetMapping("/users/{userNo}")
     public String findUser(@PathVariable("userNo") Long userNo, Model model) {
 
         // 회원 한명 조회
@@ -46,7 +48,7 @@ public class UserController {
     *   @param UserRequestDto
     *   @return String(View-Name)
     * */
-    @GetMapping("/user/join")
+    @GetMapping("/users/joinForm")
     public String userJoinForm(Model model) {
         model.addAttribute("userRequestDto", new UserRequestDto());
         return "";
@@ -57,7 +59,7 @@ public class UserController {
      *   @param UserRequestDto
      *   @return ResponseEntity
      * */
-    @PostMapping("/user/join")
+    @PostMapping("/users")
     public String joinUser(@Valid UserRequestDto userRequestDto, BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()) {
@@ -80,7 +82,7 @@ public class UserController {
      *   @param userNo
      *   @return String(View-Name)
      * */
-    @GetMapping("/user/modify/{userNo}")
+    @GetMapping("/users/modifyForm/{userNo}")
     public String modifyUserForm(@PathVariable("userNo") Long userNo, Model model) {
         // 회원 한명 조회
         User user = userService.findOneUser(userNo);
@@ -98,7 +100,7 @@ public class UserController {
      *   @param UserRequestDto
      *   @return ResponseEntity
      * */
-    @PutMapping("/user/modify")
+    @PatchMapping ("/users/{userNo}")
     public String modifyUser(@Valid UserRequestDto userRequestDto, BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()) {
@@ -110,6 +112,19 @@ public class UserController {
 
          // 회원정보 수정 진행
         User modifiedUser = userService.modifyUser(modifyUser);
+
+        return "";
+    }
+
+    @GetMapping("/users")
+    public String findAllUser(Model model) {
+        List<User> userList = userService.findAllUsers();
+        
+        List<UserResponseDto> userResponseDtoList = userList.stream()
+                .map(user -> new UserResponseDto(user))
+                .collect(Collectors.toList());
+
+        model.addAttribute("userList", userResponseDtoList);
 
         return "";
     }
