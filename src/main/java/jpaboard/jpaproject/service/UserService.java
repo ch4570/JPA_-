@@ -4,8 +4,11 @@ import jpaboard.jpaproject.domain.User;
 import jpaboard.jpaproject.domain.UserRole;
 import jpaboard.jpaproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Optional;
 
 
@@ -68,6 +71,19 @@ public class UserService {
         User user = userRepository.findById(userNo)
                         .orElseThrow(() ->  new IllegalStateException("해당 회원번호와 일치하는 회원이 없어 삭제가 불가능합니다."));
         userRepository.delete(user);
+    }
+
+    /*
+    *   회원 전체 조회
+    *   @param Sort
+    *   @return User<List>
+    * */
+    public List<User> findAllUsers() {
+        List<User> userList = userRepository.findAll(Sort.by(Sort.Direction.ASC, "no"));
+        if(userList.isEmpty()) {
+            throw new IllegalStateException("회원 가입된 회원이 한명도 없습니다.");
+        }
+        return userList;
     }
 
     /*

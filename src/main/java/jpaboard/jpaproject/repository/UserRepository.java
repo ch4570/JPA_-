@@ -1,8 +1,10 @@
 package jpaboard.jpaproject.repository;
 
 import jpaboard.jpaproject.domain.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -33,4 +35,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     *   @param userNo
     * */
     public void delete(User user);
+
+    /*
+    *   회원 전체 조회
+    *   @param Sort
+    *   @return List<User>
+    * */
+    public List<User> findAll(Sort sort);
 }
