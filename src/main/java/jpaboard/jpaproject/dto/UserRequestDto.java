@@ -24,7 +24,7 @@ public class UserRequestDto {
     private String name;
 
     @NotEmpty(message = "비밀번호는 필수 입력 항목입니다.")
-    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$", message = "비밀번호는 영문과 특수문자를 포함하며 8자 이상이어야 합니다.")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$", message = "비밀번호는 영문과 특수문자를 포함하며 8자 이상, 20자 이하여야 합니다.")
     private String pwd;
 
     @NotEmpty(message = "이메일은 필수 입력 항목입니다.")
@@ -41,5 +41,13 @@ public class UserRequestDto {
                 .pwd(pwd)
                 .email(email)
                 .build();
+    }
+
+    public UserRequestDto(User user) {
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.name = user.getName();
+        this.pwd = user.getPwd();
+        this.no = user.getNo();
     }
 }

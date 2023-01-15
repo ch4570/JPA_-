@@ -1,5 +1,6 @@
 package jpaboard.jpaproject.dto;
 
+import jpaboard.jpaproject.domain.User;
 import jpaboard.jpaproject.domain.UserRole;
 import lombok.*;
 
@@ -21,4 +22,12 @@ public class UserResponseDto {
 
     private UserRole userRole;
 
+    public UserResponseDto(User user) {
+        this.no = user.getNo();
+        this.id = user.getId();
+        this.name = user.getName();
+        this.pwd = user.getPwd();
+        this.email = user.getEmail();
+        this.userRole = user.getUserRole();
+    }
 }

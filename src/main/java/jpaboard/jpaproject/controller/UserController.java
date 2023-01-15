@@ -27,17 +27,15 @@ public class UserController {
      * */
     @GetMapping("/user/find/{userNo}")
     public String findUser(@PathVariable("userNo") Long userNo, Model model) {
+
+        // 회원 한명 조회
         User user = userService.findOneUser(userNo);
-        UserResponseDto responseUser = UserResponseDto.builder()
-                        .no(user.getNo())
-                        .name(user.getName())
-                        .pwd(user.getPwd())
-                        .id(user.getId())
-                        .email(user.getEmail())
-                        .userRole(user.getUserRole())
-                        .build();
+
+        // Entity => DTO변환
+        UserResponseDto responseUser = new UserResponseDto(user);
 
         model.addAttribute("user", responseUser);
+
         return "user/userInfo";
     }
 
@@ -65,7 +63,10 @@ public class UserController {
             return "";
         }
 
+        // DTO => Entity 변환
         User joinUser = userRequestDto.userRequestToEntity();
+
+        // 회원 가입진행
         User userResponse = userService.join(joinUser);
 
         return "redirect:/";
@@ -80,16 +81,14 @@ public class UserController {
      * */
     @GetMapping("/user/modify/{userNo}")
     public String modifyUserForm(@PathVariable("userNo") Long userNo, Model model) {
+        // 회원 한명 조회
         User user = userService.findOneUser(userNo);
-        UserRequestDto userRequestDto = UserRequestDto.builder()
-                .no(user.getNo())
-                .id(user.getId())
-                .name(user.getName())
-                .pwd(user.getPwd())
-                .email(user.getEmail())
-                .build();
+
+        // Entity => DTO 변환
+        UserRequestDto userRequestDto = new UserRequestDto(user);
 
         model.addAttribute("userRequestDto", userRequestDto);
+
         return "";
     }
 
@@ -105,7 +104,10 @@ public class UserController {
             return "";
         }
 
+        // DTO => Entity 변환
         User modifyUser = userRequestDto.userRequestToEntity();
+
+         // 회원정보 수정 진행
         User modifiedUser = userService.modifyUser(modifyUser);
 
         return "";
