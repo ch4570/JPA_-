@@ -118,8 +118,10 @@ public class UserController {
 
     @GetMapping("/users")
     public String findAllUser(Model model) {
+        // 전체 회원 조회(Entity List 반환)
         List<User> userList = userService.findAllUsers();
-        
+
+        // 전체 회원 리스트(Entity) => DTO로 변환
         List<UserResponseDto> userResponseDtoList = userList.stream()
                 .map(user -> new UserResponseDto(user))
                 .collect(Collectors.toList());
