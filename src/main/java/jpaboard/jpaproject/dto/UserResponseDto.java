@@ -9,7 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 public class UserResponseDto {
 
-
     private Long no;
 
     private String id;

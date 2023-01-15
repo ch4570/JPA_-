@@ -13,6 +13,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class UserRequestDto {
 
+
     private Long no;
 
     @NotEmpty(message = "회원 ID는 필수 입력 항목입니다.")
