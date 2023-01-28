@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import static org.assertj.core.api.Assertions.*;
 public class UserServiceTest {
 
     @Autowired UserService userService;
+    @Autowired PasswordEncoder passwordEncoder;
 
     @BeforeEach
     public void beforeTest() {
@@ -192,5 +194,27 @@ public class UserServiceTest {
 
         // then
        throwable.isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    @DisplayName("비밀번호 암호화 테스트")
+    @Transactional
+    public void isEncodedPassword() {
+        // given
+        userService.removeAllUsers();
+        String plainPassword = "{bcrypt}javascript";
+        User insertUser1 = userService.join(User.builder()
+                .id("Ruby on Rails")
+                .pwd(plainPassword)
+                .email("aaa@aaa.com")
+                .name("A")
+                .userRole(UserRole.USER)
+                .build());
+
+        // when
+        boolean isMatched = passwordEncoder.matches(insertUser1.getPwd(), plainPassword);
+
+        // then
+        assertThat(isMatched);
     }
 }
