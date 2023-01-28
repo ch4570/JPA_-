@@ -4,6 +4,8 @@ import jpaboard.jpaproject.domain.User;
 import jpaboard.jpaproject.domain.UserRole;
 import org.assertj.core.api.AbstractThrowableAssert;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,18 @@ public class UserServiceTest {
 
     @Autowired UserService userService;
 
+    @BeforeEach
+    public void beforeTest() {
+        userService.removeAllUsers();
+    }
+
+    @AfterEach
+    public void afterTest() {
+        userService.removeAllUsers();
+    }
+
+
+
     @Test
     @DisplayName("정상 회원 가입 테스트")
     @Transactional
@@ -29,10 +43,10 @@ public class UserServiceTest {
 
         // given
         User insertUser = userService.join(User.builder()
-                .id("Kafka")
+                .id("Rust")
                 .pwd("javascript")
                 .email("aaa@aaa.com")
-                .name("RexSeo")
+                .name("C언어의 정석")
                 .userRole(UserRole.USER)
                 .build());
 
@@ -51,10 +65,10 @@ public class UserServiceTest {
 
         // given
         User insertUser = User.builder()
-                .id("Kafka")
+                .id("Rust")
                 .pwd("javascript")
                 .email("aaa@aaa.com")
-                .name("RexSeo")
+                .name("C언어의 정석")
                 .userRole(UserRole.USER)
                 .build();
 
@@ -74,10 +88,10 @@ public class UserServiceTest {
 
         // given
         User insertUser = User.builder()
-                .id("Kafka")
+                .id("Rust")
                 .pwd("javascript")
                 .email("aaa@aaa.com")
-                .name("RexSeo")
+                .name("C언어의 정석")
                 .userRole(UserRole.USER)
                 .build();
 
@@ -85,16 +99,16 @@ public class UserServiceTest {
 
         User modifyUser = User.builder()
                 .no(insertUser.getNo())
-                .id("Kafka")
+                .id("RabbitMQ")
                 .pwd("javascript")
                 .email("aaa@aaa.com")
-                .name("DevSeo")
+                .name("HodongDev")
                 .userRole(UserRole.USER)
                 .build();
 
         // when
         User modifiedUser = userService.modifyUser(modifyUser);
-        User findModifiedUser = userService.findOneUserByName("DevSeo");
+        User findModifiedUser = userService.findOneUserByName("HodongDev");
 
         //then
         assertThat(modifiedUser).isEqualTo(findModifiedUser);
@@ -107,13 +121,14 @@ public class UserServiceTest {
     public void deleteUserTest() {
 
         // given
-        User insertUser = userService.join(User.builder()
-                .id("Kafka")
+        User insertUser = User.builder()
+                .id("Rust")
                 .pwd("javascript")
                 .email("aaa@aaa.com")
-                .name("RexSeo")
+                .name("C언어의 정석")
                 .userRole(UserRole.USER)
-                .build());
+                .build();
+        userService.join(insertUser);
 
         // when
         userService.removeUser(insertUser.getNo());
@@ -128,6 +143,7 @@ public class UserServiceTest {
     @Transactional
     public void selectAllUsers() {
         // given
+        userService.removeAllUsers();
         User insertUser1 = userService.join(User.builder()
                 .id("Ruby on Rails")
                 .pwd("javascript")
@@ -136,13 +152,15 @@ public class UserServiceTest {
                 .userRole(UserRole.USER)
                 .build());
 
+
         User insertUser2 = userService.join(User.builder()
-                .id("RabbitMQ")
+                .id("RedisCacheManager")
                 .pwd("javascript")
                 .email("aaa@aaa.com")
                 .name("B")
                 .userRole(UserRole.USER)
                 .build());
+
 
         User insertUser3 = userService.join(User.builder()
                 .id("Docker")
@@ -151,6 +169,7 @@ public class UserServiceTest {
                 .name("C")
                 .userRole(UserRole.USER)
                 .build());
+
 
         // when
         List<User> userList = userService.findAllUsers();
@@ -162,17 +181,16 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("회원 리스트 비어 있을때 예외 테스트")
+    @DisplayName("회원 리스트 비어 있을때 예외 발생 여부 테스트")
     @Transactional
     public void selectAllUsersIsEmpty() {
         // given
-
+        userService.removeAllUsers();
 
         // when
-
+        AbstractThrowableAssert throwable = assertThatThrownBy(() -> userService.findAllUsers());
 
         // then
-       assertThatThrownBy(() -> userService.findAllUsers())
-               .isInstanceOf(IllegalStateException.class);
+       throwable.isInstanceOf(IllegalStateException.class);
     }
 }

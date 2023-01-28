@@ -2,7 +2,10 @@ package jpaboard.jpaproject.repository;
 
 import jpaboard.jpaproject.domain.User;
 import jpaboard.jpaproject.domain.UserRole;
+import jpaboard.jpaproject.service.UserService;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +24,24 @@ import static org.assertj.core.api.Assertions.*;
 @RunWith(SpringRunner.class)
 public class UserRepositoryTest {
 
-    @Autowired UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
+
+
+    @BeforeEach
+    public void beforeTest() {
+        userRepository.deleteAll();
+    }
+
+    @AfterEach
+    public void afterTest() {
+        userRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("정상 회원 가입 케이스 테스트")
     @Transactional
     public void joinUser() {
-
         // given
         User insertUser = userRepository.save(User.builder()
                         .id("Kafka")
@@ -48,7 +62,6 @@ public class UserRepositoryTest {
     @DisplayName("회원 이름으로 조회 테스트")
     @Transactional
     public void findUserByName() {
-
         // given
         User insertUser = userRepository.save(User.builder()
                     .id("Kafka")
@@ -67,7 +80,7 @@ public class UserRepositoryTest {
 
 
     @Test
-    @DisplayName("없는 회원 조회 예외 테스트")
+    @DisplayName("없는 회원 조회 예외 발생 여부 테스트")
     @Transactional
     public void notExistUserFindTest() {
 
@@ -87,7 +100,6 @@ public class UserRepositoryTest {
     @DisplayName("회원 삭제 테스트")
     @Transactional
     public void deleteUserTest() {
-
         // given
         User insertUser = userRepository.save(User.builder()
                 .id("Kafka")
