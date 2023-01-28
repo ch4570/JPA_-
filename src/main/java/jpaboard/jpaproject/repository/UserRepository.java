@@ -42,4 +42,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     *   @return List<User>
     * */
     public List<User> findAll(Sort sort);
+
+    /*
+    *   회원 전체 삭제
+    * */
+    public void deleteAll();
 }
