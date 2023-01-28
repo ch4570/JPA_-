@@ -5,6 +5,7 @@ import jpaboard.jpaproject.domain.UserRole;
 import jpaboard.jpaproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /*
     *   회원 가입
@@ -27,6 +29,8 @@ public class UserService {
     @Transactional
     public User join(User user) {
         isDuplicate(user);
+        // 비밀번호 암호화 후 저장
+        user.setPwd(passwordEncoder.encode("{bcrypt}"+user.getPwd()));
         user.setUserRole(UserRole.USER);
         return userRepository.save(user);
     }
@@ -71,6 +75,14 @@ public class UserService {
         User user = userRepository.findById(userNo)
                         .orElseThrow(() ->  new IllegalStateException("해당 회원번호와 일치하는 회원이 없어 삭제가 불가능합니다."));
         userRepository.delete(user);
+    }
+
+    /*
+    *   회원 전체 삭제 - Test Code 전용
+    * */
+    @Transactional
+    public void removeAllUsers() {
+        userRepository.deleteAll();
     }
 
     /*
