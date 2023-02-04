@@ -1,6 +1,7 @@
 package jpaboard.jpaproject.repository;
 
 import jpaboard.jpaproject.domain.User;
+import jpaboard.jpaproject.dto.UserLoginRequestDto;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -29,6 +30,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     *   @return User
     * */
     public User findByName(String name);
+
+    /*
+     *   회원 한명 아이디로 조회
+     *   @param id
+     *   @return User
+     * */
+    public User findById(String id);
 
     /*
     *   회원 한명 삭제

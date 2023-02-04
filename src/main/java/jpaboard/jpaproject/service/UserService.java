@@ -2,8 +2,10 @@ package jpaboard.jpaproject.service;
 
 import jpaboard.jpaproject.domain.User;
 import jpaboard.jpaproject.domain.UserRole;
+import jpaboard.jpaproject.dto.UserLoginRequestDto;
 import jpaboard.jpaproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -54,6 +57,17 @@ public class UserService {
     public User findOneUserByName(String name) {
         return userRepository.findByName(name);
     }
+
+    /*
+    *   회원 한명 아이디로 조회
+    *   @param UserLoginRequestDto
+    *   @return User
+    * */
+    public User findOneUserById(String id) {
+        return userRepository.findById(id);
+    }
+
+
 
     /*
     *   회원 한명 업데이트
@@ -97,6 +111,34 @@ public class UserService {
         }
         return userList;
     }
+
+    /*
+    *   회원 로그인 정보 일치여부 검사
+    *   @param UserLoginRequestDto
+    *   @return boolean
+    * */
+    public boolean isAuthorization(UserLoginRequestDto dto) {
+
+        // 입력한 회원 ID로 회원 한명을 조회한다.
+        User user = findOneUserById(dto.getId());
+
+        // 비밀번호에 암호화 방식을 붙여준다.
+        String password = "{bcrypt}"+dto.getPwd();
+
+        // 조회한 회원객체가 null 이면 없는 회원이므로 false 반환
+        if(user == null) {
+            return false;
+        }
+
+        // 조회한 회원 객체가 null이 아니라면 비밀번호가 일치하는지 조회
+        if(passwordEncoder.matches(password, user.getPwd())) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
 
     /*
     *   중복 회원 조회 메서드
