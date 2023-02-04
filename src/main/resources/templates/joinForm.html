@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .fieldError{
+            border-color : red;
+            color : red;
+        }
+    </style>
+</head>
+<body>
+    <form th:action="@{/users}"  th:object="${userJoinRequestDto}" method="post">
+        <label>아이디</label><br>
+        <input type="text" th:field="*{id}"/><br>
+        <p class="fieldError" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
+
+        <label>비밀번호</label><br>
+        <input type="password" th:field="*{pwd}"/><br>
+        <p class="fieldError" th:if="${#fields.hasErrors('pwd')}" th:errors="*{pwd}"></p>
+
+        <label>이름</label><br>
+        <input type="text" th:field="*{name}"/><br>
+        <p class="fieldError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+
+        <label>이메일</label><br>
+        <input type="text" th:field="*{email}"/><br>
+        <p class="fieldError" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+
+        <input type="submit" value="회원가입">
+    </form>
+</body>
+</html>
