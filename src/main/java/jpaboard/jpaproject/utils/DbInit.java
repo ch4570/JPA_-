@@ -14,7 +14,7 @@ public class DbInit {
 
     private final UserService userService;
 
-//    @PostConstruct
+    @PostConstruct
     public void init() {
         User insertUser1 = User.builder()
                 .id("Kafka")
