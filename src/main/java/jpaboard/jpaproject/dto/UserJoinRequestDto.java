@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 @Getter @Setter
 @AllArgsConstructor @Builder
 @NoArgsConstructor
-public class UserRequestDto {
+public class UserJoinRequestDto {
 
 
     private Long no;
@@ -44,7 +44,7 @@ public class UserRequestDto {
                 .build();
     }
 
-    public UserRequestDto(User user) {
+    public UserJoinRequestDto(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.name = user.getName();
