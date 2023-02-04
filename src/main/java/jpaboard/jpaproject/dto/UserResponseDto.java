@@ -7,6 +7,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class UserResponseDto {
 
     private Long no;
@@ -20,6 +21,8 @@ public class UserResponseDto {
     private String email;
 
     private UserRole userRole;
+    private String regDate;
+    private String modDate;
 
     public UserResponseDto(User user) {
         this.no = user.getNo();
@@ -28,5 +31,7 @@ public class UserResponseDto {
         this.pwd = user.getPwd();
         this.email = user.getEmail();
         this.userRole = user.getUserRole();
+        this.regDate = user.getRegDate();
+        this.modDate = user.getModDate();
     }
 }
