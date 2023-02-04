@@ -31,6 +31,7 @@ public class User extends BaseEntity {
     private String email;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "USER_ROLE")
     private UserRole userRole;
 
     @OneToMany(mappedBy = "user")

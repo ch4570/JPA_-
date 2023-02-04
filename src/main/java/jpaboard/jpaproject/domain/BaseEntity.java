@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@Getter
 public abstract class BaseEntity {
 
 
@@ -23,6 +24,8 @@ public abstract class BaseEntity {
 
     @Column(name = "MOD_DATE")
     private String modDate;
+
+
 
     @PrePersist
     public void onPrePersist() {
